@@ -117,37 +117,34 @@ namespace list_f {
         return fast == nullptr ? false : true;
     }
 
+
     /*!
-     * \brief Функция для нахождения количества элементов зацикленного списка.
-     * \param list список.
-     * \return количество элементов списка. Если список без цикла, то -1;
+     * \brief Функция нахождения места сочленения Y-образного списка.
+     * \param firstHead указатель на первую "голову".
+     * \param secondHead "указатель на вторую "голову".
+     * \return указатель на место сочленения.
      */
-    int cycleListCount(Node *list) {
-        if (list == nullptr) return 0;
-        if (list->next == nullptr) return 1;
+    Node *connectionPoint(Node *firstHead, Node *secondHead)
+    {
+        auto firstLen = listLength(firstHead);
+        auto secondLen = listLength(secondHead);
 
-        Node *slow = list;
-        Node *fast = list->next->next;
-
-//        int count(0);
-        while (fast != nullptr && fast != slow) {
-            slow = slow->next;
-            fast = fast->next->next;
-//            ++count;
+        if (firstLen > secondLen) {
+            for (size_t i = 0; i < firstLen - secondLen; ++i) {
+                firstHead = firstHead->next;
+            }
+        } else if(secondLen > firstLen) {
+            for (size_t i = 0; i < secondLen - firstLen; ++i) {
+                secondHead = secondHead->next;
+            }
         }
 
+        while (firstHead != secondHead) {
+            firstHead = firstHead->next;
+            secondHead = secondHead->next;
+        }
 
-//        if (fast == nullptr) return -1;
-//        return  count + 1;
-
-//        if (list == slow->next->next) return count; // if it's ring
-
-//        while (list != slow->next->next->next) {
-//            ++count;
-//            list = list->next;
-//        }
-
-        return count;
+        return firstHead;
     }
 }
 
